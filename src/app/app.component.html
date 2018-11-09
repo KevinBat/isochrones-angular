@@ -1,20 +1,79 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+<!-- Menu -->
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="app-name">Isochrones</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav [mode]="'side'" disableClose>
+      <mat-nav-list class="container">
+        
+        <!-- Map -->
+        <p>Mon formulaire</p>
+		<form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+			<mat-button-toggle-group name="FromOrTo" [(ngModel)]="model.fromOrTo" #fromOrTo="ngModel" appearance="legacy">
+				<mat-button-toggle value="From">From</mat-button-toggle>
+				<mat-button-toggle value="To">To</mat-button-toggle>
+			</mat-button-toggle-group>
+			<br>
+
+			<mat-form-field>
+				<input matInput placeholder="{{fromOrTo.value}}" name="fromOrToValue" [(ngModel)]="model.fromOrToValue" #fromOrToValue="ngModel" required />
+			</mat-form-field>
+			<br>	
+
+			<span>Durations in minutes :</span>
+			<button type="button" (click)="addDuration()" mat-icon-button class="duration-button" color="primary" [disabled]="model.durations.length >= maxDurationsNumber">
+				<mat-icon>add_box</mat-icon>
+			</button>
+			<button type="button" (click)="removeDuration()" mat-icon-button class="duration-button" color="primary" [disabled]="model.durations.length <= 1">
+				<mat-icon>indeterminate_check_box</mat-icon>
+			</button>
+			<br>
+			
+			<span *ngFor="let x of durationCounter(); index as i; last as last">
+				<mat-form-field class="duration-field" >
+					<input class="duration-input" matInput type="number" name="durations{{i}}" [(ngModel)]="model.durations[i]" #durations[i]="ngModel" required />
+				</mat-form-field>
+				<span *ngIf="!last">, </span>
+				<br *ngIf="i===4">
+			</span>
+			<br>
+
+			<mat-form-field fxFlex floatPlaceholder="never">
+                  <input matInput placeholder="Begin Date"
+				    name="dateTime"
+					[(ngModel)]="model.beginDate" #beginDate="ngModel"
+					[min]="minBeginDate"
+                    [owlDateTimeTrigger]="dt" [owlDateTime]="dt" required>
+                  <owl-date-time #dt></owl-date-time>
+			</mat-form-field>
+			<br>
+			
+			
+			<mat-form-field class="mat-number-field">
+				<input matInput placeholder="Iterations" type="number" name="iterations" [(ngModel)]="model.iterations" #iterations="ngModel" required />
+			</mat-form-field>
+			<span *ngIf="iterations.value > 1">
+				<span> every </span>
+				<mat-form-field class="mat-number-field">
+					<input matInput placeholder="Delay" type="number" name="delay" [(ngModel)]="model.delay" #delay="ngModel" required />
+				</mat-form-field>
+				<span> minutes</span>
+			</span>
+			<br>
+			
+			<button type="submit" mat-raised-button color="primary" [disabled]="f.form.invalid || isWorking">Submit</button>
+		</form>
+	  </mat-nav-list>
+	  <div class="overlay" *ngIf="isWorking"><mat-spinner class="spinner"></mat-spinner></div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <!-- Map -->
+      <div id="map"></div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
