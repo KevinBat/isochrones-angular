@@ -12,7 +12,8 @@ export class IsochronesService {
 
   getIsochrones(fromOrTo: string, fromOrToValue: string, durationsArray: number[], beginDate: Date, delay: number, iterations: number) {
     
-    
+    //https://isochrones-rest.herokuapp.com
+    //http://localhost:8080
     let url: string = 'https://isochrones-rest.herokuapp.com/api/isochrones?' +
         '&'+fromOrTo.toLowerCase()+'=' + fromOrToValue +
         '&beginDate=' + formatDate(beginDate, 'yyyy-MM-ddTHH:mm', "en-US") +
