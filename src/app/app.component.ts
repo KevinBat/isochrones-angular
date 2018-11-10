@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
    constructor(private isochronesService: IsochronesService) { }
 
     ngOnInit() {
-
+        // Map
         L.Marker.prototype.options.icon = this.defaultIcon;
         const beginPosition: L.LatLng = L.latLng(48.86160921192831, 2.3480594158172607);
 
@@ -44,6 +44,7 @@ export class AppComponent implements OnInit {
         this.map.on('click', this.putMarkerOnMap, this);
         this.marker = L.marker(beginPosition).addTo(this.map);
 
+        // var/model
         this.minBeginDate = new Date();
         this.isWorking = false;
 
@@ -76,15 +77,17 @@ export class AppComponent implements OnInit {
 
     putIsochrone(dataJson: any, map: L.Map) {
         console.log('Success ! :' + dataJson);
+        // list of all colors to display
         const colorArrays = ['rgb(0,255,0)', 'rgb(57,255,0)', 'rgb(114,255,0)',
             'rgb(170,255,0)', 'rgb(227,255,0)', 'rgb(255,227,0)', 'rgb(255,171,0)',
             'rgb(255,114,0)', 'rgb(255,57,0)', 'rgb(255,0,0)'];
 
+        // remove old isochrones
         this.geoJsonLayers.forEach((layer) => {map.removeLayer(layer); });
         this.geoJsonLayers = [];
 
         for (let i = 0; i < dataJson.geojsons.length; i++) {
-
+            // display each isochrone
             const colorNumber: number = Math.round(i * (this.maxDurationsNumber / dataJson.geojsons.length));
             const geoJsonLayer: L.GeoJSON = L.geoJSON(dataJson.geojsons[i], {
                 weight: 1,
@@ -98,9 +101,10 @@ export class AppComponent implements OnInit {
     }
 
     putMarkerOnMap(e: L.LeafletMouseEvent) {
-      this.map.removeLayer(this.marker);
-      this.marker = L.marker(e.latlng).addTo(this.map);
-      this.model.fromOrToValue = this.marker.getLatLng().lng.toFixed(5) + ';' + this.marker.getLatLng().lat.toFixed(5);
+        // Replace the marker on click
+        this.map.removeLayer(this.marker);
+        this.marker = L.marker(e.latlng).addTo(this.map);
+        this.model.fromOrToValue = this.marker.getLatLng().lng.toFixed(5) + ';' + this.marker.getLatLng().lat.toFixed(5);
     }
 
     addDuration() {

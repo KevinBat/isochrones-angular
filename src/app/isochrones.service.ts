@@ -11,7 +11,7 @@ export class IsochronesService {
   constructor(private httpClient: HttpClient) { }
 
   getIsochrones(fromOrTo: string, fromOrToValue: string, durationsArray: number[], beginDate: Date, delay: number, iterations: number) {
-
+    // build REST API url and return Observable
     let url: string = 'https://isochrones-rest.herokuapp.com/api/isochrones?' +
         fromOrTo.toLowerCase() + '=' + fromOrToValue +
         '&beginDate=' + formatDate(beginDate, 'yyyy-MM-ddTHH:mm', 'en-US') +
