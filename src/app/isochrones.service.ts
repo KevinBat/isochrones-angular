@@ -11,17 +11,15 @@ export class IsochronesService {
   constructor(private httpClient: HttpClient) { }
 
   getIsochrones(fromOrTo: string, fromOrToValue: string, durationsArray: number[], beginDate: Date, delay: number, iterations: number) {
-    
-    //https://isochrones-rest.herokuapp.com
-    //http://localhost:8080
+
     let url: string = 'https://isochrones-rest.herokuapp.com/api/isochrones?' +
-        '&'+fromOrTo.toLowerCase()+'=' + fromOrToValue +
-        '&beginDate=' + formatDate(beginDate, 'yyyy-MM-ddTHH:mm', "en-US") +
+        fromOrTo.toLowerCase() + '=' + fromOrToValue +
+        '&beginDate=' + formatDate(beginDate, 'yyyy-MM-ddTHH:mm', 'en-US') +
         '&delay=' + delay +
         '&nb=' + iterations;
-    
+
     durationsArray.forEach(duration => {
-        url+= '&durations=' + (duration*60);
+        url += '&durations=' + (duration * 60);
     });
 
     console.log(url);
