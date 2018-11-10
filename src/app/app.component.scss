@@ -34,10 +34,12 @@ mat-button-toggle-group {
 	max-width: 35px;
 }
 .duration-input::-webkit-inner-spin-button {
-	margin: 0;
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 .duration-input::-webkit-outer-spin-button {
-	margin: 0;
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 .mat-button-toggle-checked {
 	background-color: $color_purple_heart_approx;
